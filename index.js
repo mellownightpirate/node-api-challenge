@@ -25,6 +25,8 @@ const port = process.env.PORT || 4000;
 
 const app = express();
 
+app.use(express.static(path.join(__dirname, 'client/build')))
+
 function errorHandlingMiddleware(err, req, res, next) {
     res.status(500).json(err.message);
   }
