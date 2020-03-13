@@ -35,7 +35,20 @@ router.post("/api/projects", (req, res) => {
   }
 });
 
-router.delete("/", (req, res) => {});
+router.delete("/api/projects/:id", (req, res) => {
+    projects
+      .remove(req.params.id)
+      .then(code => {
+        if (code === 1) {
+          res.status(202).json(`Post successfully deleted`);
+        } else {
+          res.status(404).json(`There isn't a project with this ID`);
+        }
+      })
+      .catch(error => {
+        res.status(500).json(`Error deleting post`);
+      });
+  });
 
 router.put("/", (req, res) => {});
 
