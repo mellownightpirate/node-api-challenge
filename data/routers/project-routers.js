@@ -50,6 +50,34 @@ router.delete("/api/projects/:id", (req, res) => {
       });
   });
 
-router.put("/", (req, res) => {});
+  router.put("/api/projects", (req, res) => {
+    if (req.body.id && req.body.name && req.body.description) {
+      projects
+        .get(req.body.id)
+        .then(post => {
+          if (post === null) {
+            res.status(404).json(`There isn't a project with this ID`);
+          } else {
+            projects
+              .update(req.body.id, req.body)
+              .then(updated => {
+                res.status(202).json(updated);
+              })
+              .catch(error => {
+                res.status(500).json(`Error updating post`);
+              });
+          }
+        })
+        .catch(error => {
+          res.status(500).json(`Error collecting data`);
+        });
+    } else {
+      res
+        .status(400)
+        .json(
+          "Please provide post id, name and description for your post"
+        );
+    }
+  });
 
 module.exports = router;
