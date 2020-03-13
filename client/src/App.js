@@ -10,22 +10,41 @@ function getBaseURL() {
 }
 
 function App() {
+  const [projects, setProjects] = useState([]);
+  const [actions, setActions] = useState([]);
+  const [error, setError] = useState(null);
+
+  const getData = e => {
+    axios
+      .get(getBaseURL() + "/api/projects", { id: "" })
+      .then(projects => {
+        setProjects(projects.data);
+        console.log(projects);
+      })
+      .catch(error => {
+        setError(error.message);
+      });
+    axios
+      .get(getBaseURL() + "/api/actions", { id: "" })
+      .then(actions => {
+        setActions(actions.data);
+        console.log(actions);
+      })
+      .catch(error => {
+        setError(error.message);
+      });
+  };
+
+  const handleClick = e => {
+    getData();
+  };
+
+  const handleEdit = e => {};
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+<h1>Projects</h1>
     </div>
   );
 }
