@@ -37,8 +37,55 @@ router.post("/api/actions", (req, res) => {
   }
 });
 
-router.delete("/", (req, res) => {});
+router.delete("/api/actions/:id", (req, res) => {
+    actions
+      .remove(req.params.id)
+      .then(code => {
+        if (code === 1) {
+          res.status(202).json(`Action successfully deleted`);
+        } else {
+          res.status(404).json(`There isn't a action with this ID`);
+        }
+      })
+      .catch(error => {
+        res.status(500).json(`Error deleting action`);
+      });
+  });
 
-router.put("/", (req, res) => {});
+  router.put("/api/actions", (req, res) => {
+    if (
+      req.body.id &&
+      req.body.project_id &&
+      req.body.description &&
+      req.body.notes &&
+      req.body.completed
+    ) {
+      actions
+        .get(req.body.id)
+        .then(action => {
+          if (action === null) {
+            res.status(404).json(`No action with this ID`);
+          } else {
+            actions
+              .update(req.body.id, req.body)
+              .then(action => {
+                res.status(200).json(action);
+              })
+              .catch(error => {
+                res.status(500).json(`Error updating action`);
+              });
+          }
+        })
+        .catch(error => {
+          res.status(500).json(`Error collecting actions data`);
+        });
+    } else {
+      res
+        .status(400)
+        .json(
+          "Please provide project_id, description, notes, and completed status for your action"
+        );
+    }
+  });
 
 module.exports = router;
