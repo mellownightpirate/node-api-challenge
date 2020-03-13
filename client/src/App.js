@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import logo from './logo.svg';
 import './App.css';
+import ProjectsList from "./components/projects";
 
 function getBaseURL() {
   return process.env.NODE_ENV === 'development'
@@ -45,6 +46,8 @@ function App() {
   return (
     <div className="App">
 <h1>Projects</h1>
+<button onClick={handleClick}>See Projects</button>
+      <ProjectsList projects={projects} actions={actions} getData={getData} />
     </div>
   );
 }
